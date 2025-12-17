@@ -1256,7 +1256,7 @@
             <p class="cta-desc">
                 Let's discuss how AI automation can transform your business operations.
             </p>
-            <a href="mailto:contact@automate.com" class="btn-primary">Get in Touch</a>
+            <a href="/cdn-cgi/l/email-protection#c4a7abaab0a5a7b084a5b1b0aba9a5b0a1eaa7aba9" class="btn-primary">Get in Touch</a>
         </div>
     </section>
 
@@ -1266,7 +1266,7 @@
         <p class="footer-text">© 2025 AI Automation Solutions. Built with passion.</p>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Webhook URL for n8n
         const WEBHOOK_URL = 'https://razvanbota.app.n8n.cloud/webhook/39da3d95-6b76-4deb-9425-32c69cef14ff';
 
@@ -1350,9 +1350,9 @@
                     if (typeof data === 'string') {
                         botReply = data;
                     } else if (Array.isArray(data) && data.length > 0) {
-                        botReply = data[0].output || data[0].message || data[0].response || data[0].text || JSON.stringify(data);
+                        botReply = data[0].reply || data[0].output || data[0].message || data[0].response || data[0].text || JSON.stringify(data);
                     } else {
-                        botReply = data.output || data.message || data.response || data.text || 'Mulțumesc pentru mesaj!';
+                        botReply = data.reply || data.output || data.message || data.response || data.text || 'Mulțumesc pentru mesaj!';
                     }
                     addMessage(botReply);
                 } else {
@@ -1473,9 +1473,4 @@
         document.querySelectorAll('.feature-card, .workflow-step').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-    </script>
-</body>
-</html>
+ 
