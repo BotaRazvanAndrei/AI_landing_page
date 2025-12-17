@@ -1341,14 +1341,14 @@
 
                     console.log('Response from n8n:', data);
 
-                    // Handle n8n response format: [{"output": "message"}]
+                    // Handle n8n response format
                     let botReply;
-                    if (Array.isArray(data) && data.length > 0 && data[0].output) {
-                        botReply = data[0].output;
-                    } else if (Array.isArray(data) && data.length > 0) {
-                        botReply = data[0].message || data[0].response || data[0].text || JSON.stringify(data[0]);
+                    if (Array.isArray(data) && data.length > 0) {
+                        // Array format: [{"reply": "message"}] or [{"output": "message"}]
+                        botReply = data[0].reply || data[0].output || data[0].message || data[0].response || data[0].text || JSON.stringify(data[0]);
                     } else if (typeof data === 'object' && data !== null) {
-                        botReply = data.output || data.message || data.response || data.text || JSON.stringify(data);
+                        // Object format: {"reply": "message"}
+                        botReply = data.reply || data.output || data.message || data.response || data.text || JSON.stringify(data);
                     } else if (typeof data === 'string') {
                         botReply = data;
                     } else {
