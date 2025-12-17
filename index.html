@@ -1276,6 +1276,14 @@
         const chatSend = document.getElementById('chat-send');
         let isWaiting = false;
 
+        // Generate unique session ID for this conversation
+        let sessionId = localStorage.getItem('chatSessionId');
+        if (!sessionId) {
+            sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('chatSessionId', sessionId);
+        }
+        console.log('Session ID:', sessionId);
+
         // Add message to chat
         function addMessage(text, isUser = false) {
             const messageDiv = document.createElement('div');
@@ -1329,6 +1337,7 @@
                     },
                     body: JSON.stringify({
                         message: message,
+                        sessionId: sessionId,
                         timestamp: new Date().toISOString(),
                         source: 'landing-page'
                     })
