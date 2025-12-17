@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://razvanbota.app.n8n.cloud https://*.n8n.cloud *; font-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;">
+    <title>Automate | AI Automation Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0b;
+            --bg-card: #111113;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #7c5cff;
+            --accent-warm: #ff6b4a;
+            --text-primary: #ffffff;
+            --text-secondary: #8a8a8f;
+            --text-muted: #4a4a4f;
+            --border-subtle: rgba(255,255,255,0.06);
+            --glow-primary: rgba(0, 212, 170, 0.15);
+            --glow-secondary: rgba(124, 92, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Syne', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Noise texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Grid background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Ambient glow orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--glow-primary);
+            top: -200px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--glow-secondary);
+            bottom: -150px;
+            left: -100px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(5deg); }
+            66% { transform: translate(-20px, 20px) rotate(-5deg); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--bg-dark), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            background: var(--text-primary);
+            color: var(--bg-dark);
+            padding: 0.8rem 1.8rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--border-subtle);
+            border: 1px solid var(--border-subtle);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(3.5rem, 10vw, 7rem);
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), #00a888);
+            color: var(--bg-dark);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-subtle);
+            border-color: transparent;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--text-muted), transparent);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 8rem 4rem;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-label {
+            color: var(--accent-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Demo Container */
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Calendar Panel */
+        .calendar-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calendar-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .panel-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .calendar-embed {
+            width: 100%;
+            min-height: 400px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            background: #fff;
+        }
+
+        /* Connection Line */
+        .connection-line {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .connection-dots {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .connection-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+
+        .connection-dot:nth-child(2) { animation-delay: 0.2s; }
+        .connection-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .connection-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .connection-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border: 1px dashed var(--border-subtle);
+            border-radius: 20px;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .connection-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Phone Mockup */
+        .phone-container {
+            position: relative;
+        }
+
+        .phone-mockup {
+            width: 320px;
+            height: 660px;
+            background: #1a1a1c;
+            border-radius: 50px;
+            padding: 12px;
+            position: relative;
+            box-shadow: 
+                0 50px 100px rgba(0,0,0,0.5),
+                inset 0 0 0 2px rgba(255,255,255,0.1);
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #0a0a0b;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            border-radius: 40px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chat Interface */
+        .chat-header {
+            padding: 3rem 1.5rem 1rem;
+            background: linear-gradient(to bottom, rgba(0,212,170,0.1), transparent);
+            text-align: center;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 16px;
+            margin: 0 auto 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-status {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 0.9rem 1.1rem;
+            border-radius: 18px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            animation: messageIn 0.3s ease-out;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .message-bot {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-user {
+            background: linear-gradient(135deg, var(--accent-primary), #00a888);
+            color: var(--bg-dark);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 1rem;
+            align-self: flex-start;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-6px); }
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .chat-send {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent-primary), #00a888);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .chat-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 212, 170, 0.4);
+        }
+
+        .chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Powered by badge */
+        .powered-by {
+            text-align: center;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .powered-by span {
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 8rem 4rem;
+            background: linear-gradient(to bottom, transparent, rgba(0,212,170,0.02), transparent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 212, 170, 0.3);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--glow-primary), transparent);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-section {
+            padding: 8rem 4rem;
+        }
+
+        .workflow-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .workflow-container::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 100px;
+            right: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary), var(--accent-warm));
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-card);
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            max-width: 200px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 4rem;
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(124,92,255,0.1));
+            border: 1px solid var(--border-subtle);
+            border-radius: 32px;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .cta-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .cta-desc {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .connection-line {
+                flex-direction: row;
+            }
+
+            .connection-dots {
+                flex-direction: row;
+            }
+
+            .calendar-panel {
+                order: 2;
+            }
+
+            .phone-container {
+                order: 1;
+            }
+
+            .connection-line {
+                order: 3;
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                padding: 1rem 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            .demo-section,
+            .features-section,
+            .how-section,
+            .cta-section {
+                padding: 4rem 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+
+            .workflow-container::before {
+                display: none;
+            }
+        }
+
+        /* Calendar placeholder styling */
+        .calendar-placeholder {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .cal-header {
+            background: #fff;
+            padding: 1rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cal-nav {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .cal-nav button {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 0.3rem 0.6rem;
+            cursor: pointer;
+        }
+
+        .cal-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #fff;
+        }
+
+        .cal-day-header {
+            padding: 0.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cal-day {
+            padding: 0.5rem;
+            min-height: 60px;
+            border-right: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+            font-size: 0.75rem;
+        }
+
+        .cal-day.today {
+            background: rgba(0, 212, 170, 0.1);
+        }
+
+        .cal-event {
+            background: linear-gradient(135deg, var(--accent-primary), #00a888);
+            color: #fff;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            Automate
+        </div>
+        <ul class="nav-links">
+            <li><a href="#demo">Demo</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+        </ul>
+        <a href="#contact" class="nav-cta">Get Started</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            AI-Powered Business Automation
+        </div>
+        <h1>Automate <em>Everything</em></h1>
+        <p class="hero-subtitle">
+            Transform your business operations with intelligent AI agents that handle bookings, 
+            customer service, and workflows — 24/7, without missing a beat.
+        </p>
+        <div class="hero-cta-group">
+            <a href="#demo" class="btn-primary">Try Live Demo</a>
+            <a href="#contact" class="btn-secondary">Book a Call</a>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="section-header">
+            <div class="section-label">Live Demo</div>
+            <h2 class="section-title">See It In Action</h2>
+            <p class="section-desc">
+                Chat with our AI receptionist — it handles bookings, checks availability, 
+                and syncs directly with Google Calendar.
+            </p>
+        </div>
+
+        <div class="demo-container">
+            <!-- Calendar Panel -->
+            <div class="calendar-panel">
+                <div class="panel-header">
+                    <div class="panel-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="panel-title">Google Calendar</div>
+                        <div class="panel-subtitle">Real-time booking sync</div>
+                    </div>
+                </div>
+                <div class="calendar-placeholder" id="calendar-display">
+                    <div class="cal-header">
+                        <div class="cal-nav">
+                            <button>‹</button>
+                            <span id="cal-month">December 2025</span>
+                            <button>›</button>
+                        </div>
+                        <span style="font-size: 0.8rem; color: #666;">📅 Google Calendar</span>
+                    </div>
+                    <div class="cal-grid" id="cal-grid">
+                        <!-- Calendar will be populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Visual -->
+            <div class="connection-line">
+                <div class="connection-dots">
+                    <div class="connection-dot"></div>
+                    <div class="connection-dot"></div>
+                    <div class="connection-dot"></div>
+                </div>
+                <div class="connection-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                        <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                    </svg>
+                </div>
+                <div class="connection-label">n8n Workflow</div>
+                <div class="connection-dots">
+                    <div class="connection-dot"></div>
+                    <div class="connection-dot"></div>
+                    <div class="connection-dot"></div>
+                </div>
+            </div>
+
+            <!-- Phone Mockup -->
+            <div class="phone-container">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        <div class="chat-header">
+                            <div class="chat-avatar">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                </svg>
+                            </div>
+                            <div class="chat-title">AI Receptionist</div>
+                            <div class="chat-status">
+                                <span class="status-dot"></span>
+                                Online
+                            </div>
+                        </div>
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message message-bot">
+                                Salut! 👋 Sunt asistentul tău virtual pentru rezervări. Cum te pot ajuta astăzi?
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <div class="chat-input-wrapper">
+                                <input 
+                                    type="text" 
+                                    class="chat-input" 
+                                    id="chat-input"
+                                    placeholder="Type a message..."
+                                    autocomplete="off"
+                                >
+                                <button class="chat-send" id="chat-send">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5">
+                                        <line x1="22" y1="2" x2="11" y2="13"/>
+                                        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="powered-by">
+                            Powered by <span>n8n</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-header">
+            <div class="section-label">Capabilities</div>
+            <h2 class="section-title">What We Automate</h2>
+            <p class="section-desc">
+                From simple tasks to complex workflows, we build AI solutions that scale with your business.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI Receptionists</h3>
+                <p class="feature-desc">
+                    24/7 virtual assistants that handle bookings, answer questions, and provide customer support in multiple languages.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3 class="feature-title">Smart Scheduling</h3>
+                <p class="feature-desc">
+                    Automated appointment booking that syncs with Google Calendar, checks availability, and sends confirmations.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📧</div>
+                <h3 class="feature-title">Email Automation</h3>
+                <p class="feature-desc">
+                    Intelligent email handling with AI-powered responses, follow-ups, and lead qualification.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3 class="feature-title">API Integrations</h3>
+                <p class="feature-desc">
+                    Connect any tool or service with custom integrations using n8n, Zapier, or direct API connections.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Data Processing</h3>
+                <p class="feature-desc">
+                    Automate data entry, extraction, and analysis with AI-powered document processing.
+                </p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">Chat & Messaging</h3>
+                <p class="feature-desc">
+                    Deploy AI chatbots on WhatsApp, Telegram, SMS, or your website to engage customers instantly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-section" id="how-it-works">
+        <div class="section-header">
+            <div class="section-label">Process</div>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-desc">
+                From idea to deployment in three simple steps.
+            </p>
+        </div>
+
+        <div class="workflow-container">
+            <div class="workflow-step">
+                <div class="step-number">1</div>
+                <h4 class="step-title">Discovery</h4>
+                <p class="step-desc">We analyze your workflows and identify automation opportunities.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">2</div>
+                <h4 class="step-title">Build</h4>
+                <p class="step-desc">Custom AI agents and workflows tailored to your needs.</p>
+            </div>
+            <div class="workflow-step">
+                <div class="step-number">3</div>
+                <h4 class="step-title">Deploy</h4>
+                <p class="step-desc">Launch, monitor, and optimize your automations.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="cta-box">
+            <h2 class="cta-title">Ready to Automate?</h2>
+            <p class="cta-desc">
+                Let's discuss how AI automation can transform your business operations.
+            </p>
+            <a href="mailto:contact@automate.com" class="btn-primary">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Automate</div>
+        <p class="footer-text">© 2025 AI Automation Solutions. Built with passion.</p>
+    </footer>
+
+    <script>
+        // Webhook URL for n8n
+        const WEBHOOK_URL = 'https://razvanbota.app.n8n.cloud/webhook/39da3d95-6b76-4deb-9425-32c69cef14ff';
+
+        // Chat functionality
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+        let isWaiting = false;
+
+        // Add message to chat
+        function addMessage(text, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'message-user' : 'message-bot'}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Show typing indicator
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typing';
+            typingDiv.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Remove typing indicator
+        function hideTyping() {
+            const typing = document.getElementById('typing');
+            if (typing) typing.remove();
+        }
+
+        // Send message to webhook
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message || isWaiting) return;
+
+            // Add user message
+            addMessage(message, true);
+            chatInput.value = '';
+            isWaiting = true;
+            chatSend.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'landing-page'
+                    })
+                });
+
+                hideTyping();
+
+                if (response.ok) {
+                    let data;
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                    } else {
+                        data = await response.text();
+                    }
+                    
+                    // Handle different response formats from n8n
+                    let botReply;
+                    if (typeof data === 'string') {
+                        botReply = data;
+                    } else if (Array.isArray(data) && data.length > 0) {
+                        botReply = data[0].output || data[0].message || data[0].response || data[0].text || JSON.stringify(data);
+                    } else {
+                        botReply = data.output || data.message || data.response || data.text || 'Mulțumesc pentru mesaj!';
+                    }
+                    addMessage(botReply);
+                } else {
+                    console.error('Response not ok:', response.status, response.statusText);
+                    addMessage('Scuze, am întâmpinat o problemă. Te rog încearcă din nou.');
+                }
+            } catch (error) {
+                hideTyping();
+                console.error('Fetch error:', error);
+                addMessage('Scuze, nu mă pot conecta momentan. Te rog încearcă mai târziu.');
+            }
+
+            isWaiting = false;
+            chatSend.disabled = false;
+        }
+
+        // Event listeners
+        chatSend.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Generate calendar display
+        function generateCalendar() {
+            const calGrid = document.getElementById('cal-grid');
+            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            
+            // Add day headers
+            days.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'cal-day-header';
+                header.textContent = day;
+                calGrid.appendChild(header);
+            });
+
+            // Get current date info
+            const now = new Date();
+            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            const startPadding = firstDay.getDay();
+
+            // Add empty cells for padding
+            for (let i = 0; i < startPadding; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'cal-day';
+                calGrid.appendChild(emptyCell);
+            }
+
+            // Add day cells
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'cal-day';
+                if (day === now.getDate()) {
+                    dayCell.classList.add('today');
+                }
+                
+                const dayNum = document.createElement('div');
+                dayNum.textContent = day;
+                dayCell.appendChild(dayNum);
+
+                // Add sample events
+                if (day === 18) {
+                    const event = document.createElement('div');
+                    event.className = 'cal-event';
+                    event.textContent = 'Meeting 10:00';
+                    dayCell.appendChild(event);
+                }
+                if (day === 20) {
+                    const event = document.createElement('div');
+                    event.className = 'cal-event';
+                    event.textContent = 'Booking 14:00';
+                    dayCell.appendChild(event);
+                }
+                if (day === 23) {
+                    const event = document.createElement('div');
+                    event.className = 'cal-event';
+                    event.textContent = 'Call 11:30';
+                    dayCell.appendChild(event);
+                }
+
+                calGrid.appendChild(dayCell);
+            }
+        }
+
+        // Initialize calendar
+        generateCalendar();
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for scroll animations
+        document.querySelectorAll('.feature-card, .workflow-step').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
