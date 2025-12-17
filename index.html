@@ -935,76 +935,6 @@
             }
         }
 
-        /* Calendar placeholder styling */
-        .calendar-placeholder {
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            border-radius: 12px;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .cal-header {
-            background: #fff;
-            padding: 1rem;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cal-nav {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            font-size: 0.9rem;
-            color: #333;
-        }
-
-        .cal-nav button {
-            background: none;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 0.3rem 0.6rem;
-            cursor: pointer;
-        }
-
-        .cal-grid {
-            flex: 1;
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            background: #fff;
-        }
-
-        .cal-day-header {
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.7rem;
-            color: #666;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cal-day {
-            padding: 0.5rem;
-            min-height: 60px;
-            border-right: 1px solid #eee;
-            border-bottom: 1px solid #eee;
-            font-size: 0.75rem;
-        }
-
-        .cal-day.today {
-            background: rgba(0, 212, 170, 0.1);
-        }
-
-        .cal-event {
-            background: linear-gradient(135deg, var(--accent-primary), #00a888);
-            color: #fff;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.65rem;
-            margin-top: 0.3rem;
-        }
     </style>
 </head>
 <body>
@@ -1081,19 +1011,14 @@
                         <div class="panel-subtitle">Real-time booking sync</div>
                     </div>
                 </div>
-                <div class="calendar-placeholder" id="calendar-display">
-                    <div class="cal-header">
-                        <div class="cal-nav">
-                            <button>‹</button>
-                            <span id="cal-month">December 2025</span>
-                            <button>›</button>
-                        </div>
-                        <span style="font-size: 0.8rem; color: #666;">📅 Google Calendar</span>
-                    </div>
-                    <div class="cal-grid" id="cal-grid">
-                        <!-- Calendar will be populated by JS -->
-                    </div>
-                </div>
+                <iframe
+                    src="https://calendar.google.com/calendar/embed?src=ebe52823de7641a6718e1c0656252e0c1e5dc05afaf89337e859784a6da0ff40%40group.calendar.google.com&ctz=Europe%2FBucharest"
+                    style="border: 0; border-radius: 12px; background: #fff;"
+                    width="100%"
+                    height="600"
+                    frameborder="0"
+                    scrolling="no">
+                </iframe>
             </div>
 
             <!-- Connection Visual -->
@@ -1384,71 +1309,6 @@
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
-
-        // Generate calendar display
-        function generateCalendar() {
-            const calGrid = document.getElementById('cal-grid');
-            const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-            
-            // Add day headers
-            days.forEach(day => {
-                const header = document.createElement('div');
-                header.className = 'cal-day-header';
-                header.textContent = day;
-                calGrid.appendChild(header);
-            });
-
-            // Get current date info
-            const now = new Date();
-            const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-            const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            const startPadding = firstDay.getDay();
-
-            // Add empty cells for padding
-            for (let i = 0; i < startPadding; i++) {
-                const emptyCell = document.createElement('div');
-                emptyCell.className = 'cal-day';
-                calGrid.appendChild(emptyCell);
-            }
-
-            // Add day cells
-            for (let day = 1; day <= lastDay.getDate(); day++) {
-                const dayCell = document.createElement('div');
-                dayCell.className = 'cal-day';
-                if (day === now.getDate()) {
-                    dayCell.classList.add('today');
-                }
-                
-                const dayNum = document.createElement('div');
-                dayNum.textContent = day;
-                dayCell.appendChild(dayNum);
-
-                // Add sample events
-                if (day === 18) {
-                    const event = document.createElement('div');
-                    event.className = 'cal-event';
-                    event.textContent = 'Meeting 10:00';
-                    dayCell.appendChild(event);
-                }
-                if (day === 20) {
-                    const event = document.createElement('div');
-                    event.className = 'cal-event';
-                    event.textContent = 'Booking 14:00';
-                    dayCell.appendChild(event);
-                }
-                if (day === 23) {
-                    const event = document.createElement('div');
-                    event.className = 'cal-event';
-                    event.textContent = 'Call 11:30';
-                    dayCell.appendChild(event);
-                }
-
-                calGrid.appendChild(dayCell);
-            }
-        }
-
-        // Initialize calendar
-        generateCalendar();
 
         // Smooth scroll for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
