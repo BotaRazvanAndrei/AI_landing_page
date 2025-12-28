@@ -854,6 +854,102 @@
             margin-bottom: 2rem;
         }
 
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .form-submit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-primary), #00a888);
+            color: var(--bg-dark);
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 212, 170, 0.3);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+            display: block;
+        }
+
+        .form-message.error {
+            background: rgba(255, 107, 74, 0.1);
+            border: 1px solid var(--accent-warm);
+            color: var(--accent-warm);
+            display: block;
+        }
+
         /* Footer */
         footer {
             padding: 4rem;
@@ -1033,7 +1129,7 @@
                         <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
                     </svg>
                 </div>
-                <div class="connection-label">n8n Workflow</div>
+            <!-- Here vas n8n Workflow text-->
                 <div class="connection-dots">
                     <div class="connection-dot"></div>
                     <div class="connection-dot"></div>
@@ -1080,9 +1176,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="powered-by">
-                            Powered by <span>n8n</span>
-                        </div>
+                       <!--Here was owerd by n8n-->
                     </div>
                 </div>
             </div>
@@ -1181,7 +1275,27 @@
             <p class="cta-desc">
                 Let's discuss how AI automation can transform your business operations.
             </p>
-            <a href="mailto:contact@automate.com" class="btn-primary">Get in Touch</a>
+
+            <form class="contact-form" id="contact-form">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Your Email</label>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your automation needs..." required></textarea>
+                </div>
+
+                <button type="submit" class="form-submit" id="form-submit">Send Message</button>
+
+                <div class="form-message" id="form-message"></div>
+            </form>
         </div>
     </section>
 
@@ -1345,6 +1459,57 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             observer.observe(el);
+        });
+
+        // Contact Form Handler
+        const contactForm = document.getElementById('contact-form');
+        const formSubmit = document.getElementById('form-submit');
+        const formMessage = document.getElementById('form-message');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('message').value
+            };
+
+            formSubmit.disabled = true;
+            formSubmit.textContent = 'Sending...';
+            formMessage.className = 'form-message';
+            formMessage.textContent = '';
+
+            try {
+                // Send to n8n workflow for contact form
+                const response = await fetch('https://razvanbota.app.n8n.cloud/webhook/a51a3286-b05c-4f0e-8398-2f65ac2bd36d', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        ...formData,
+                        timestamp: new Date().toISOString(),
+                        source: 'contact-form'
+                    })
+                });
+
+                if (response.ok) {
+                    formMessage.className = 'form-message success';
+                    formMessage.textContent = 'Thank you! Your message has been sent successfully.';
+                    contactForm.reset();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                formMessage.className = 'form-message error';
+                formMessage.textContent = 'Oops! Something went wrong. Please try again or email us directly at razvan.bota@gmail.com';
+            } finally {
+                formSubmit.disabled = false;
+                formSubmit.textContent = 'Send Message';
+            }
         });
     </script>
 </body>
