@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-   <meta http-equiv="Content-Security-Policy" content="
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -11,6 +13,7 @@
   frame-src 'self' https://calendar.google.com;
 ">
     <title>Automate | AI Automation Solutions</title>
+    <meta name="description" content="Transform your business operations with intelligent AI agents that handle bookings, customer service, and workflows — 24/7.">
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,10 +34,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
             scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -1010,11 +1015,34 @@
                 padding: 6rem 2rem 4rem;
             }
 
+            .hero h1 {
+                font-size: clamp(2.5rem, 8vw, 4rem);
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-cta-group .btn-primary,
+            .hero-cta-group .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
             .demo-section,
             .features-section,
             .how-section,
             .cta-section {
                 padding: 4rem 2rem;
+            }
+
+            .section-title {
+                font-size: clamp(2rem, 6vw, 3rem);
             }
 
             .features-grid {
@@ -1027,6 +1055,147 @@
             }
 
             .workflow-container::before {
+                display: none;
+            }
+
+            /* Mobile phone mockup */
+            .phone-mockup {
+                width: 100%;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            /* Mobile calendar */
+            .calendar-panel {
+                padding: 1rem;
+            }
+
+            iframe {
+                height: 400px;
+            }
+
+            /* Mobile contact form */
+            .cta-box {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-cta {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 5rem 1rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .demo-section,
+            .features-section,
+            .how-section,
+            .cta-section {
+                padding: 3rem 1rem;
+            }
+
+            .section-label {
+                font-size: 0.75rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-desc {
+                font-size: 0.95rem;
+            }
+
+            /* Feature cards on mobile */
+            .feature-card {
+                padding: 1.5rem;
+            }
+
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .feature-title {
+                font-size: 1.1rem;
+            }
+
+            .feature-desc {
+                font-size: 0.9rem;
+            }
+
+            /* Workflow steps on mobile */
+            .step-number {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2rem;
+            }
+
+            .step-title {
+                font-size: 1rem;
+            }
+
+            .step-desc {
+                font-size: 0.85rem;
+            }
+
+            /* CTA box on mobile */
+            .cta-box {
+                padding: 1.5rem 1rem;
+            }
+
+            .cta-title {
+                font-size: 1.8rem;
+            }
+
+            .cta-desc {
+                font-size: 0.95rem;
+            }
+
+            /* Chat messages smaller on mobile */
+            .message {
+                font-size: 0.85rem;
+                padding: 0.8rem 1rem;
+            }
+
+            /* Footer on mobile */
+            footer {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* Landscape mobile phones */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .hero {
+                min-height: auto;
+                padding: 4rem 2rem 3rem;
+            }
+
+            .scroll-indicator {
                 display: none;
             }
         }
