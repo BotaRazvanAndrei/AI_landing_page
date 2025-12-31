@@ -329,6 +329,41 @@
             position: relative;
         }
 
+        /* Disclaimer Box */
+        .disclaimer-box {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            background: rgba(0, 212, 170, 0.05);
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .disclaimer-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 212, 170, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .disclaimer-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .disclaimer-text strong {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+
         .section-header {
             text-align: center;
             margin-bottom: 5rem;
@@ -695,76 +730,6 @@
             font-weight: 600;
         }
 
-        /* Features Section */
-        .features-section {
-            padding: 8rem 4rem;
-            background: linear-gradient(to bottom, transparent, rgba(0,212,170,0.02), transparent);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 24px;
-            padding: 2.5rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 212, 170, 0.3);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        .feature-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--glow-primary), transparent);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
         /* How It Works */
         .how-section {
             padding: 8rem 4rem;
@@ -1035,7 +1000,6 @@
             }
 
             .demo-section,
-            .features-section,
             .how-section,
             .cta-section {
                 padding: 4rem 2rem;
@@ -1043,10 +1007,6 @@
 
             .section-title {
                 font-size: clamp(2rem, 6vw, 3rem);
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
             }
 
             .workflow-container {
@@ -1083,6 +1043,17 @@
             .form-group textarea {
                 font-size: 16px; /* Prevents zoom on iOS */
             }
+
+            /* Disclaimer on mobile */
+            .disclaimer-box {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+
+            .disclaimer-icon {
+                width: 36px;
+                height: 36px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -1112,7 +1083,6 @@
             }
 
             .demo-section,
-            .features-section,
             .how-section,
             .cta-section {
                 padding: 3rem 1rem;
@@ -1130,24 +1100,6 @@
                 font-size: 0.95rem;
             }
 
-            /* Feature cards on mobile */
-            .feature-card {
-                padding: 1.5rem;
-            }
-
-            .feature-icon {
-                width: 48px;
-                height: 48px;
-            }
-
-            .feature-title {
-                font-size: 1.1rem;
-            }
-
-            .feature-desc {
-                font-size: 0.9rem;
-            }
-
             /* Workflow steps on mobile */
             .step-number {
                 width: 60px;
@@ -1161,6 +1113,8 @@
 
             .step-desc {
                 font-size: 0.85rem;
+                margin: 0 auto;
+                max-width: 100%;
             }
 
             /* CTA box on mobile */
@@ -1221,7 +1175,6 @@
         </div>
         <ul class="nav-links">
             <li><a href="#demo">Demo</a></li>
-            <li><a href="#features">Features</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
         </ul>
         <a href="#contact" class="nav-cta">Get Started</a>
@@ -1254,9 +1207,21 @@
             <div class="section-label">Live Demo</div>
             <h2 class="section-title">See It In Action</h2>
             <p class="section-desc">
-                Chat with our AI receptionist — it handles bookings, checks availability, 
+                Chat with our Demo Hotel AI receptionist example — it handles bookings, checks availability,
                 and syncs directly with Google Calendar.
             </p>
+        </div>
+
+        <!-- Privacy Disclaimer -->
+        <div class="disclaimer-box">
+            <div class="disclaimer-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <div class="disclaimer-text">
+                <strong>Privacy Notice:</strong> This is a demo environment. Your data is not saved or shared with third parties. All data is automatically deleted every 10 minutes.
+            </div>
         </div>
 
         <div class="demo-container">
@@ -1338,7 +1303,7 @@
                                     autocomplete="off"
                                 >
                                 <button class="chat-send" id="chat-send">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5">
+                                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0a0a0b" stroke-width="2.5">
                                         <line x1="22" y1="2" x2="11" y2="13"/>
                                         <polygon points="22 2 15 22 11 13 2 9 22 2"/>
                                     </svg>
@@ -1348,62 +1313,6 @@
                        <!--Here was owerd by n8n-->
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features-section" id="features">
-        <div class="section-header">
-            <div class="section-label">Capabilities</div>
-            <h2 class="section-title">What We Automate</h2>
-            <p class="section-desc">
-                From simple tasks to complex workflows, we build AI solutions that scale with your business.
-            </p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3 class="feature-title">AI Receptionists</h3>
-                <p class="feature-desc">
-                    24/7 virtual assistants that handle bookings, answer questions, and provide customer support in multiple languages.
-                </p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📅</div>
-                <h3 class="feature-title">Smart Scheduling</h3>
-                <p class="feature-desc">
-                    Automated appointment booking that syncs with Google Calendar, checks availability, and sends confirmations.
-                </p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📧</div>
-                <h3 class="feature-title">Email Automation</h3>
-                <p class="feature-desc">
-                    Intelligent email handling with AI-powered responses, follow-ups, and lead qualification.
-                </p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔗</div>
-                <h3 class="feature-title">API Integrations</h3>
-                <p class="feature-desc">
-                    Connect any tool or service with custom integrations using n8n, Zapier, or direct API connections.
-                </p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Data Processing</h3>
-                <p class="feature-desc">
-                    Automate data entry, extraction, and analysis with AI-powered document processing.
-                </p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3 class="feature-title">Chat & Messaging</h3>
-                <p class="feature-desc">
-                    Deploy AI chatbots on WhatsApp, Telegram, SMS, or your website to engage customers instantly.
-                </p>
             </div>
         </div>
     </section>
@@ -1422,17 +1331,17 @@
             <div class="workflow-step">
                 <div class="step-number">1</div>
                 <h4 class="step-title">Discovery</h4>
-                <p class="step-desc">We analyze your workflows and identify automation opportunities.</p>
+                <p class="step-desc">We learn how your business currently handles leads, bookings, and operations.</p>
             </div>
             <div class="workflow-step">
                 <div class="step-number">2</div>
                 <h4 class="step-title">Build</h4>
-                <p class="step-desc">Custom AI agents and workflows tailored to your needs.</p>
+                <p class="step-desc">We design and build custom AI agents that handle those tasks automatically.</p>
             </div>
             <div class="workflow-step">
                 <div class="step-number">3</div>
                 <h4 class="step-title">Deploy</h4>
-                <p class="step-desc">Launch, monitor, and optimize your automations.</p>
+                <p class="step-desc">Your automation runs 24/7, reduces costs, and grows with your business.</p>
             </div>
         </div>
     </section>
@@ -1442,7 +1351,7 @@
         <div class="cta-box">
             <h2 class="cta-title">Ready to Automate?</h2>
             <p class="cta-desc">
-                Let's discuss how AI automation can transform your business operations.
+                Let's discuss how AI agents can transform your business operations.
             </p>
 
             <form class="contact-form" id="contact-form">
@@ -1623,7 +1532,7 @@
         }, observerOptions);
 
         // Observe elements for scroll animations
-        document.querySelectorAll('.feature-card, .workflow-step').forEach(el => {
+        document.querySelectorAll('.workflow-step').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
