@@ -449,6 +449,30 @@
             color: var(--text-muted);
         }
 
+        .calendar-refresh {
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: auto;
+        }
+
+        .calendar-refresh:hover {
+            background: rgba(0, 212, 170, 0.2);
+            border-color: var(--accent-primary);
+            transform: rotate(180deg);
+        }
+
+        .calendar-refresh:active {
+            transform: rotate(180deg) scale(0.95);
+        }
+
         .calendar-embed {
             width: 100%;
             min-height: 400px;
@@ -1188,8 +1212,7 @@
         </div>
         <h1>Automate <em>Everything</em></h1>
         <p class="hero-subtitle">
-            Transform your business operations with intelligent AI agents that handle bookings, 
-            customer service, and workflows — 24/7, without missing a beat.
+            Transform your business operations with AI agents working 24/7 without missing a beat!
         </p>
         <div class="hero-cta-group">
             <a href="#demo" class="btn-primary">Try Live Demo</a>
@@ -1240,8 +1263,14 @@
                         <div class="panel-title">Google Calendar</div>
                         <div class="panel-subtitle">Real-time booking sync</div>
                     </div>
+                    <button class="calendar-refresh" id="calendar-refresh" title="Refresh Calendar">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2">
+                            <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                        </svg>
+                    </button>
                 </div>
                 <iframe
+                    id="calendar-iframe"
                     src="https://calendar.google.com/calendar/embed?src=ebe52823de7641a6718e1c0656252e0c1e5dc05afaf89337e859784a6da0ff40%40group.calendar.google.com&ctz=Europe%2FBucharest"
                     style="border: 0; border-radius: 12px; background: #fff;"
                     width="100%"
@@ -1588,6 +1617,18 @@
                 formSubmit.disabled = false;
                 formSubmit.textContent = 'Send Message';
             }
+        });
+
+        // Calendar refresh functionality
+        const calendarRefresh = document.getElementById('calendar-refresh');
+        const calendarIframe = document.getElementById('calendar-iframe');
+
+        calendarRefresh.addEventListener('click', () => {
+            const currentSrc = calendarIframe.src;
+            calendarIframe.src = '';
+            setTimeout(() => {
+                calendarIframe.src = currentSrc;
+            }, 100);
         });
     </script>
 </body>
