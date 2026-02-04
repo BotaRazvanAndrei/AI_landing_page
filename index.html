@@ -6,11 +6,12 @@
     <meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self' 'unsafe-inline' 'unsafe-eval';
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://calendar.google.com;
   font-src 'self' https://fonts.gstatic.com;
   img-src 'self' data: https:;
-  connect-src 'self' https://razvanbota.app.n8n.cloud https://*.n8n.cloud;
-  frame-src 'self' https://calendar.google.com;
+  connect-src 'self' https://razvanbota.app.n8n.cloud https://*.n8n.cloud https://calendar.google.com;
+  frame-src 'self' https://calendar.google.com https://*.google.com;
+  frame-ancestors 'self';
 ">
     <title>dialoger | AI Automation Solutions</title>
     <meta name="description" content="Transform your business operations with intelligent AI agents that handle bookings, customer service, and workflows — 24/7.">
